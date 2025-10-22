@@ -1,1 +1,172 @@
+<!doctype html>
+<html lang="uz">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>SABUM — Qo‘qonda bunaqasi hali bo‘lmagan</title>
+<meta name="description" content="Qo‘qon markazidan bosh to‘lovsiz, kredit foizlarsiz 60 oyga bo‘lib to‘lashga xonadonlar xarid qilish imkoniyati.">
+<style>
+  :root{
+    --bg:#0f2a33;              /* chap tomondagi chuqur rang */
+    --bg2:#1a2f38;             /* o‘ng tomonga o‘tuvchi gradient */
+    --text:#eaf3f6;
+    --muted:#b7c6cc;
+    --red:#e11f1f;
+    --red-d:#c71a1a;
+    --container:1320px;        /* header/hero eni */
+    --radius:18px;
+    --gap:32px;
 
+    /* ⬇️ Bino foni — shu URL’ni o’zingizning rasm bilan almashtiring */
+    --bg-photo: url(""); /* masalan: url('https://sabum.uz/images/building.webp') */
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0}
+  img{max-width:100%;display:block}
+  a{text-decoration:none;color:inherit}
+
+  body{
+    font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    color:var(--text);
+    background:
+      linear-gradient(90deg, var(--bg) 0%, var(--bg2) 55%, #222b33 100%);
+    min-height:100dvh;
+    line-height:1.6;
+  }
+
+  .container{width:min(100% - 56px, var(--container));margin-inline:auto}
+
+  /* Header */
+  .site-header{padding:24px 0}
+  .header__row{display:flex;align-items:center;justify-content:space-between}
+  .brand img{height:36px}
+  .pill{
+    display:inline-flex;align-items:center;gap:10px;
+    padding:10px 16px;border-radius:999px;
+    background:#13252c; color:#dfe7ea; font-weight:600; font-size:14px;
+    box-shadow:0 1px 0 rgba(255,255,255,.05) inset;
+  }
+  .pill .dot{width:10px;height:10px;border-radius:50%;background:#ff3b3b}
+
+  /* Hero */
+  .hero{position:relative;overflow:hidden}
+  /* O‘ng tomonda bino rasmi qatlam */
+  .hero::after{
+    content:""; position:absolute; inset:0;
+    background:
+      radial-gradient(900px 500px at 85% 20%, rgba(0,0,0,.15) 0%, rgba(0,0,0,0) 60%),
+      var(--bg-photo);
+    background-repeat:no-repeat;
+    background-position: right 0 top 50%;
+    background-size: 700px auto;         /* bino kengligi */
+    pointer-events:none; z-index:0;
+    opacity:.95;
+  }
+
+  .hero__grid{
+    position:relative; z-index:1; /* fon ustida tursin */
+    display:grid; align-items:center; gap:var(--gap);
+    grid-template-columns: 56% 44%;  /* chap kengroq */
+    min-height:560px; padding:20px 0 70px;
+  }
+
+  .hero__title{
+    font-weight:900; letter-spacing:.2px;
+    font-size:64px; line-height:1.08;
+    margin:8px 0 26px;
+  }
+
+  .highlight{
+    max-width:720px; background:var(--red);
+    padding:18px 22px; border-radius:var(--radius);
+    font-weight:700; box-shadow:0 10px 24px rgba(0,0,0,.25);
+    margin-bottom:28px;
+  }
+
+  .bullets{max-width:720px; margin:0 0 30px}
+  .bullets p{
+    color:var(--muted); font-size:16px; margin:12px 0;
+    display:flex; gap:12px;
+  }
+  .dash{color:#fff; opacity:.9; margin-top:1px}
+
+  .btn{
+    display:inline-block; background:var(--red); color:#fff;
+    padding:16px 26px; border-radius:22px; font-weight:900; letter-spacing:.3px;
+    box-shadow:
+      0 10px 24px rgba(0,0,0,.25),
+      0 3px 0 rgba(0,0,0,.25) inset;
+    transition: transform .12s ease, background .15s ease;
+  }
+  .btn:hover{background:var(--red-d); transform:translateY(-1px)}
+  .note{margin-top:12px; color:var(--muted); font-size:15px}
+
+  .hero__right{position:relative; text-align:right}
+  .mentor{
+    max-height:600px; width:auto; object-fit:contain;
+    transform: translateX(10px);  /* biroz o‘ngga surish */
+    filter: drop-shadow(0 18px 28px rgba(0,0,0,.35));
+  }
+
+  /* Responsive */
+  @media (max-width:1200px){
+    .hero::after{ background-size: 560px auto; }
+    .hero__title{font-size:56px}
+    .mentor{max-height:560px}
+  }
+  @media (max-width:980px){
+    .hero__grid{grid-template-columns:1fr; min-height:auto; gap:12px; padding-bottom:40px}
+    .hero::after{ background-size: 520px auto; background-position:center bottom; opacity:.2 }
+    .hero__right{order:-1; text-align:center}
+    .mentor{transform:none; max-height:420px; margin-bottom:6px}
+    .highlight{margin-inline:auto}
+    .btn{display:inline-flex}
+    .header__row{gap:16px}
+    .hero__title{font-size:40px}
+  }
+</style>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container header__row">
+      <a class="brand" href="#">
+        <img src="https://sabum.uz/images/logoWhite.png" alt="SABUM">
+      </a>
+      <div class="pill">
+        <span class="dot" aria-hidden="true"></span>
+        <span>30-iyun | 20:00</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="hero">
+    <div class="container hero__grid">
+      <!-- Chap blok -->
+      <div>
+        <h1 class="hero__title">QO‘QONDA BUNAQASI HALI<br>BO‘LMAGAN</h1>
+
+        <div class="highlight">
+          Qo‘qon markazidan bosh to‘lovsiz, kreadit foizlarsiz 60
+          oyga bo‘lib to‘lashga xonadonlar xarid qilish imkoniyati
+        </div>
+
+        <div class="bullets">
+          <p><span class="dash">—</span> Qo‘qon shahri markazidan boshlang‘ich to‘lovsiz, katta aksiyadagi uylarni olish imkoniyati</p>
+          <p><span class="dash">—</span> Eng zo‘r markaziy joylashuvdan premium sifatdagi zamonaviy xonadonlar</p>
+          <p><span class="dash">—</span> Qo‘qonim turar joy majmuasi haqida barcha savollaringizga javob olasiz</p>
+        </div>
+
+        <a href="#" class="btn">>>> BEPUL QATNASHISH <<<</a>
+        <div class="note">Bepul qatnashish uchun bosing</div>
+      </div>
+
+      <!-- O‘ng blok -->
+      <div class="hero__right">
+        <img class="mentor" src="https://sabum.uz/images/mentor.webp" alt="Mentor">
+      </div>
+    </div>
+  </main>
+
+</body>
+</html>
