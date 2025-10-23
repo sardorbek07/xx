@@ -229,5 +229,29 @@
       }, 2500);
     });
   </script>
+  <script>
+// Developer Tools, Ctrl+U va kontekst menyusini bloklash (Windows + Mac)
+document.addEventListener('keydown', function (e) {
+  // F12, Ctrl+Shift+I/J/C/U (Windows), Ctrl+U, yoki Cmd+Opt+I/J/C/U (Mac)
+  if (
+    e.key === "F12" || // F12
+    (e.ctrlKey && e.shiftKey && ['I', 'J', 'C', 'U'].includes(e.key)) || // Windows DevTools
+    (e.ctrlKey && e.key.toUpperCase() === 'U') || // Windows Ctrl+U
+    (e.metaKey && e.altKey && ['I', 'J', 'C', 'U'].includes(e.key)) || // Mac DevTools
+    (e.metaKey && e.key.toUpperCase() === 'U') // Mac Cmd+U
+  ) {
+    e.preventDefault();
+    e.stopPropagation();
+    return false;
+  }
+});
+
+// Sichqoncha o‘ng tugmasini bloklash
+document.addEventListener('contextmenu', function (e) {
+  e.preventDefault();
+});
+</script>
+
 </body>
 </html>
+
