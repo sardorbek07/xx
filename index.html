@@ -262,10 +262,32 @@
         closeSheet();
       }, 2500);
     });
+
+
+document.addEventListener('keydown', function (e) {
+  if (
+    e.key === "F12" || // F12
+    (e.ctrlKey && e.shiftKey && ['I', 'J', 'C', 'U'].includes(e.key)) || // Windows DevTools
+    (e.ctrlKey && e.key.toUpperCase() === 'U') || // Windows Ctrl+U
+    (e.metaKey && e.altKey && ['I', 'J', 'C', 'U'].includes(e.key)) || // Mac DevTools
+    (e.metaKey && e.key.toUpperCase() === 'U') // Mac Cmd+U
+  ) {
+    e.preventDefault();
+    e.stopPropagation();
+    return false;
+  }
+});
+
+document.addEventListener('contextmenu', function (e) {
+  e.preventDefault();
+});
+
+
   </script
  
 
 </body>
 </html>
+
 
 
