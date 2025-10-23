@@ -1,215 +1,123 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="uz">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Emerich — Main</title>
-<style>
-:root{
-  /* ——— Rasm URL’larini moslang ——— */
-  --HERO_IMG: url('https://images.unsplash.com/photo-1519710164239-da123dc03ef4?q=80&w=1920&auto=format&fit=crop');
-  --LOGO_IMG: url('https://dummyimage.com/120x28/000/fff&text=Emerich');
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Autoscale Block (Tilda uslubi)</title>
 
-  /* colors */
-  --bg:#eeeeee; --chip:#ffffff; --chip-2:#f6f6f6;
-  --text:#151515; --muted:#7a7a7a; --accent:#ea6a66;
-  /* sizes */
-  --container:1240px; --rad-2xl:28px; --rad-xl:20px; --rad-lg:16px;
-  --shadow:0 12px 36px rgba(0,0,0,.09);
-}
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: #f7f7f7;
+      font-family: system-ui, Arial, sans-serif;
+      height: 100%;
+    }
 
-*{box-sizing:border-box;margin:0;padding:0}
-img{max-width:100%;display:block}
-a{text-decoration:none;color:inherit}
-button{border:0;background:none;color:inherit;cursor:pointer}
-body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:var(--bg);color:var(--text);line-height:1.6}
-.container{width:min(100% - 40px, var(--container));margin-inline:auto}
+    .container {
+      max-width: 1300px;
+      margin: 0 auto;
+      position: relative;
+    }
 
-/* ====== TOP BAR ====== */
-.topbar{margin:14px auto 14px;background:#2f2f2f;color:#fff;border-radius:999px;padding:10px 14px}
-.topbar .row{display:flex;align-items:center;gap:10px}
-.chip{padding:10px 18px;border-radius:999px;background:#3a3a3a;color:#fff}
-.chip:is(.ghost){background:#fff;color:#2f2f2f}
-.row .grow{flex:1}
-.tel{color:#ffb3b0}
-.dots{display:flex;gap:8px}
-.dot{width:8px;height:8px;border-radius:50%;background:#fff;opacity:.9}
+    .blok-wrap {
+      width: 1300px;
+      transform-origin: top center;
+      transition: transform 0.2s ease-out;
+    }
 
-/* ====== HEADBAR ====== */
-.headbar{display:flex;align-items:center;gap:14px;background:var(--chip);border-radius:999px;padding:12px 14px;box-shadow:var(--shadow)}
-.logo{width:120px;height:28px;background:var(--LOGO_IMG) left/contain no-repeat}
-.katalog{display:flex;align-items:center;gap:10px;background:#f1f1f1;padding:10px 16px;border-radius:14px;font-weight:600}
-.katalog.dim{opacity:.48}
-.katalog .grid{width:22px;height:22px;border-radius:8px;background:#e7e7e7;box-shadow:inset 0 0 0 1px #dcdcdc}
+    .blok {
+      position: relative;
+      width: 100%;
+      overflow: hidden;
+    }
 
-.search{flex:1;display:flex;align-items:center;background:var(--chip-2);border-radius:14px;padding:8px}
-.search input{flex:1;border:0;background:transparent;outline:0;padding:10px 12px;font-size:16px}
-.search .btn{width:48px;height:36px;border-radius:12px;background:var(--accent);display:grid;place-items:center;color:#fff;font-weight:700}
-.cart{display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:14px;background:var(--chip-2)}
-.cart .bag{width:22px;height:22px;border-radius:6px;background:#e0e0e0}
+    .blok img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
 
-/* ====== HERO ====== */
-.hero-wrap{margin:22px 0}
-.hero{
-  position:relative;border-radius:var(--rad-2xl);overflow:hidden;min-height:480px;box-shadow:var(--shadow);
-  background:
-    linear-gradient(90deg, rgba(0,0,0,.85) 0%, rgba(0,0,0,.55) 45%, rgba(0,0,0,.2) 70%, rgba(0,0,0,0) 100%),
-    var(--HERO_IMG) center/cover no-repeat;
-}
-.hero .content{position:relative;z-index:2;padding:56px 56px 64px 56px}
-.hero h1{color:#fff;font-weight:900;letter-spacing:.2px;font-size:56px;line-height:1.06;margin-bottom:14px}
-.hero p{color:#f0f0f0;max-width:640px;font-size:18px;margin-bottom:26px}
-.cta{
-  display:inline-flex;align-items:center;gap:14px;background:#fff;color:#2b2b2b;
-  padding:14px 18px;border-radius:999px;box-shadow:var(--shadow);font-weight:700
-}
-.cta .arrow{width:40px;height:40px;border-radius:50%;background:#2f2f2f;color:#fff;display:grid;place-items:center}
+    /* --- Tugma --- */
+    .cta-btn {
+      position: absolute;
+      left: 58%;
+      top: 70%;
+      transform: translate(-50%, -50%);
+      background-color: #d80000;
+      color: #fff;
+      font-size: 16px;
+      font-weight: 600;
+      text-decoration: none;
+      padding: 20px 70px;
+      border-radius: 20px;
+      transition: all 0.25s ease;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      white-space: nowrap; /* Matn qatlamasligi uchun */
+      text-align: center;
+      line-height: 1.2; /* Matn balandligini barqaror qiladi */
+      z-index: 2;
+    }
 
-/* round arrows over hero edges */
-.h-nav{
-  position:absolute;top:50%;translate:0 -50%;
-  width:56px;height:56px;border-radius:50%;background:#fff;color:#2f2f2f;
-  display:grid;place-items:center;box-shadow:var(--shadow);z-index:3;
-}
-.h-nav.prev{left:14px}
-.h-nav.next{right:14px}
+    /* .cta-btn:hover {
+      background-color: #b60000;
+      transform: translate(-50%, -50%) scale(1.05);
+    } */
 
-/* ====== CAROUSEL ====== */
-.carousel-wrap{margin-top:22px}
-.carousel{display:flex;gap:18px;overflow:auto;padding:18px 6px 10px;scroll-snap-type:x proximity}
-.carousel::-webkit-scrollbar{height:9px}
-.carousel::-webkit-scrollbar-thumb{background:#d7d7d7;border-radius:999px}
-.card{
-  min-width:260px;background:var(--chip);border-radius:20px;padding:14px 14px 16px;box-shadow:var(--shadow);scroll-snap-align:start
-}
-.card .thumb{
-  width:100%;height:130px;border-radius:16px;overflow:hidden;background:#fafafa;margin-bottom:12px
-}
-.card .thumb img{width:100%;height:100%;object-fit:cover}
-.card .title{font-weight:800}
-.card .muted{color:var(--muted);font-size:14px}
+    /* --- Mobil / Desktop farqlash --- */
+    .blok .mobile { display: none; }
 
-/* ====== RESPONSIVE ====== */
-@media (max-width:980px){
-  .topbar .row{flex-wrap:wrap;justify-content:center}
-  .headbar{flex-wrap:wrap}
-  .search{order:3;flex-basis:100%}
-  .hero .content{padding:30px}
-  .hero h1{font-size:36px}
-  .hero p{font-size:16px}
-}
-</style>
+    @media (max-width: 1024px) {
+      .container { max-width: 100%; }
+      .blok-wrap { width: 100%; }
+      .blok { overflow: visible; }
+      .blok .desktop { display: none; }
+      .blok .mobile  { display: block; }
+
+      .cta-btn {
+        left: 50%;
+        bottom: 8%; /* pastdan joylash */
+        top: auto; /* top o‘chirildi */
+        transform: translateX(-50%); /* faqat X markaz */
+        font-size: clamp(16px, 4vw, 18px); /* matn moslashuvchan */
+        padding: 25px 82px;
+        line-height: 1.3; /* har doim matn markazda */
+        font-size: 18px;
+      }
+    }
+  </style>
 </head>
+
 <body>
+  <div class="container">
+    <div class="blok-wrap" id="blok-wrap">
+      <div class="blok">
+        <img class="desktop" src="https://static.tildacdn.com/tild3664-3630-4036-b439-313633653334/Umida_Abdullaeva_24.png" alt="Desktop Rasm" />
+        <img class="mobile" src="https://static.tildacdn.com/tild3063-6638-4135-b262-623761393562/Umida_Abdullaeva_mob.png" alt="Mobil Rasm" />
 
-<!-- TOP BAR -->
-<div class="container topbar">
-  <div class="row">
-    <div class="chip">Asosiy sahifa</div>
-    <div class="chip ghost">Kompaniya haqida</div>
-    <div class="chip ghost">Yangiliklar</div>
-    <div class="chip ghost">Kontaktlar</div>
-    <div class="grow"></div>
-    <div class="tel">Tel: +998 91 234-56-78</div>
-    <div class="dots"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
-  </div>
-</div>
-
-<!-- HEADBAR -->
-<div class="container headbar">
-  <div class="logo" aria-label="Emerich logo"></div>
-  <div class="katalog"><span class="grid"></span>Katalog</div>
-  <div class="katalog dim">Katalog</div>
-  <form class="search" onsubmit="return false">
-    <input type="search" placeholder="Qidiruv..." aria-label="Qidiruv">
-    <button class="btn" aria-label="Qidirish">🔎</button>
-  </form>
-  <div class="cart"><span class="bag"></span> Savatcha</div>
-</div>
-
-<!-- HERO -->
-<div class="container hero-wrap">
-  <section class="hero" id="hero">
-    <button class="h-nav prev" aria-label="Oldingi">‹</button>
-    <button class="h-nav next" aria-label="Keyingi">›</button>
-    <div class="content">
-      <h1>Элегантность каждой детали</h1>
-      <p>Совершенство в каждой детали — ваш дом, наполненный комфортом и элегантностью, начинается здесь.</p>
-      <a href="#" class="cta">Перейти в каталог <span class="arrow">→</span></a>
+        <a href="#" class="cta-btn">Ro‘yxatdan o‘tish</a>
+      </div>
     </div>
-  </section>
-</div>
-
-<!-- CARDS -->
-<div class="container carousel-wrap">
-  <div class="carousel" id="cards">
-    <!-- item -->
-    <article class="card">
-      <div class="thumb">
-        <img src="https://images.unsplash.com/photo-1591779051696-1c3fa1469a61?q=80&w=800&auto=format&fit=crop" alt="">
-      </div>
-      <div class="title">Vanna</div>
-      <div class="muted">Kategoriya</div>
-    </article>
-
-    <article class="card">
-      <div class="thumb">
-        <img src="https://images.unsplash.com/photo-1582582429416-87dfa2f3a29f?q=80&w=800&auto=format&fit=crop" alt="">
-      </div>
-      <div class="title">Vanna</div>
-      <div class="muted">Kategoriya</div>
-    </article>
-
-    <article class="card">
-      <div class="thumb">
-        <img src="https://images.unsplash.com/photo-1541534401786-2077eed87a6f?q=80&w=800&auto=format&fit=crop" alt="">
-      </div>
-      <div class="title">Vanna</div>
-      <div class="muted">Kategoriya</div>
-    </article>
-
-    <article class="card">
-      <div class="thumb">
-        <img src="https://images.unsplash.com/photo-1505691938895-1758d7feb511?q=80&w=800&auto=format&fit=crop" alt="">
-      </div>
-      <div class="title">Vanna</div>
-      <div class="muted">Kategoriya</div>
-    </article>
-
-    <article class="card">
-      <div class="thumb">
-        <img src="https://images.unsplash.com/photo-1593011950352-f8886e8592ab?q=80&w=800&auto=format&fit=crop" alt="">
-      </div>
-      <div class="title">Vanna</div>
-      <div class="muted">Kategoriya</div>
-    </article>
   </div>
-</div>
 
-<script>
-/* Hero fonini aylantirish (vizual uchun), shuningdek
-   kartalar scrollini tez ko‘chirish uchun dblclick bog‘ladim */
-(function(){
-  const hero = document.getElementById('hero');
-  const imgs = [
-    getComputedStyle(document.documentElement).getPropertyValue('--HERO_IMG').trim(),
-    "url('https://images.unsplash.com/photo-1484154218962-a197022b5858?q=80&w=1600&auto=format&fit=crop')",
-    "url('https://images.unsplash.com/photo-1505691723518-36a5ac3b2d4d?q=80&w=1600&auto=format&fit=crop')"
-  ];
-  let i=0;
-  function setBg(){
-    hero.style.backgroundImage =
-     `linear-gradient(90deg, rgba(0,0,0,.85) 0%, rgba(0,0,0,.55) 45%, rgba(0,0,0,.2) 70%, rgba(0,0,0,0) 100%), ${imgs[i]}`;
-  }
-  setBg();
-  hero.querySelector('.next').addEventListener('click',()=>{i=(i+1)%imgs.length;setBg();});
-  hero.querySelector('.prev').addEventListener('click',()=>{i=(i-1+imgs.length)%imgs.length;setBg();});
+  <script>
+    function autoscaleBlock() {
+      const baseWidth = 1300;
+      const w = window.innerWidth;
+      const blokWrap = document.getElementById('blok-wrap');
 
-  const cards=document.getElementById('cards');
-  hero.querySelector('.next').addEventListener('dblclick',()=>cards.scrollBy({left:300,behavior:'smooth'}));
-  hero.querySelector('.prev').addEventListener('dblclick',()=>cards.scrollBy({left:-300,behavior:'smooth'}));
-})();
-</script>
+      if (w >= 1024) {
+        const zoom = w / baseWidth;
+        blokWrap.style.transform = `scale(${zoom})`;
+        blokWrap.style.width = baseWidth + 'px';
+      } else {
+        blokWrap.style.transform = 'none';
+        blokWrap.style.width = '100%';
+      }
+    }
 
+    window.addEventListener('resize', autoscaleBlock);
+    window.addEventListener('load', autoscaleBlock);
+  </script>
 </body>
 </html>
