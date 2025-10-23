@@ -46,7 +46,7 @@
     .xbtn{width:36px;height:36px;border-radius:12px;border:1px solid #eee;background:#fff;cursor:pointer;display:grid;place-items:center;box-shadow:0 4px 12px rgba(0,0,0,.06)}
     .xbtn:hover{background:#f7f7f7}
 
-    /* >>> KATTA markaziy chip (qoldi, lekin endi ishlatmaymiz) <<< */
+    /* >>> KATTA markaziy chip (qoldi) <<< */
     .chip-wrap{display:flex;justify-content:center}
     .chip-big{
       display:inline-flex;align-items:center;gap:10px;
@@ -108,7 +108,6 @@
         <button class="xbtn" id="closeModal" aria-label="Yopish">✕</button>
       </div>
 
-      <!-- YANGI: Faqat sarlavha + forma (chip/subtitle yo‘q) -->
       <h2 class="title" id="formTitle" style="text-align:center; background:none; color:#000; margin-bottom:14px;">Ro‘yxatdan o‘tish</h2>
 
       <!-- Forma -->
@@ -120,14 +119,17 @@
 
         <div class="field">
           <label class="field__label" for="phone">TELEFON</label>
-          <input class="field__input" id="phone" name="phone" type="tel" placeholder="+998 __ ___ __ __" inputmode="tel" required />
+          <!-- MUHIM: inputga maxlength va autocomplete qo'shildi -->
+          <input class="field__input" id="phone" name="phone" type="tel"
+                 placeholder="+998 __ ___ __ __" inputmode="tel" autocomplete="tel"
+                 maxlength="19" required />
         </div>
 
         <button type="submit" class="form__submit" id="submitBtn" disabled>Yuborish</button>
         <div class="footnote">Ma’lumotlaringiz maxfiy saqlanadi.</div>
       </form>
 
-      <!-- YANGI: Yuborildi holati (shu kartochka ichida ko‘rsatamiz) -->
+      <!-- Yuborildi holati -->
       <div class="successbox" id="successBox" aria-live="polite">
         <div class="ok">✅</div>
         <div class="txt">Ma’lumotlaringiz yuborildi!</div>
@@ -158,52 +160,84 @@
     overlay.addEventListener('click',e=>{if(e.target===overlay)closeSheet()});
     document.addEventListener('keydown',e=>{if(e.key==='Escape'&&overlay.classList.contains('active'))closeSheet()});
 
-    /* === FORMAGA TEGISHLI YANGI QISM === */
-    const form=document.getElementById('regForm');
-    const nameInput=document.getElementById('name');
-    const phoneInput=document.getElementById('phone');
-    const submitBtn=document.getElementById('submitBtn');
-    const successBox=document.getElementById('successBox');
+    /* === FORMAGA TEGISHLI YANGI QISM (mobil-friendly maska) === */
+    const form       = document.getElementById('regForm');
+    const nameInput  = document.getElementById('name');
+    const phoneInput = document.getElementById('phone');
+    const submitBtn  = document.getElementById('submitBtn');
+    const successBox = document.getElementById('successBox');
 
-    // Telefon: qat'iy maska (+998 XX XXX XX XX), faqat raqam, +998 ni o‘chirib bo‘lmaydi
+    // +998 XX XXX XX XX format
+    const phoneRegex = /^\+998 \d{2} \d{3} \d{2} \d{2}$/;
+
     function formatPhone(raw){
-      let x = raw.replace(/\D/g,'');
-      if(x.startsWith('998')) x = x.slice(3);
+      let digits = (raw || '').replace(/\D/g,'');
+      if(digits.startsWith('998')) digits = digits.slice(3); // +998 ni o'zimiz qo'yamiz
+      digits = digits.slice(0,9); // XX XXX XX XX = 9 ta raqam
       let out = '+998 ';
-      if(x.length>0) out += x.substring(0,2);
-      if(x.length>=3) out += ' ' + x.substring(2,5);
-      if(x.length>=6) out += ' ' + x.substring(5,7);
-      if(x.length>=8) out += ' ' + x.substring(7,9);
+      if(digits.length>0) out += digits.slice(0,2);
+      if(digits.length>=3) out += ' ' + digits.slice(2,5);
+      if(digits.length>=6) out += ' ' + digits.slice(5,7);
+      if(digits.length>=8) out += ' ' + digits.slice(7,9);
       return out.trim();
     }
 
-    const phoneRegex = /^\+998 \d{2} \d{3} \d{2} \d{2}$/;
+    function setCaretToEnd(el){
+      try{
+        const len = el.value.length;
+        el.setSelectionRange(len,len);
+      }catch(_){}
+    }
 
     phoneInput.addEventListener('focus', () => {
       if (phoneInput.value.trim() === '') phoneInput.value = '+998 ';
+      requestAnimationFrame(()=>setCaretToEnd(phoneInput));
     });
 
-    phoneInput.addEventListener('keypress', (e) => {
-      if (phoneInput.selectionStart < 5) e.preventDefault();       // +998 dan oldinga yozish yo‘q
-      if (!/[0-9]/.test(e.key)) e.preventDefault();                // faqat raqam
-    });
+    // Prefiksni himoya qilish va faqat raqam kiritish (mobil uchun xam)
+    phoneInput.addEventListener('beforeinput', (e) => {
+      const start = phoneInput.selectionStart ?? 0;
 
-    phoneInput.addEventListener('keydown', (e) => {
-      if ((e.key==='Backspace' || e.key==='Delete') && phoneInput.selectionStart <= 5) {
-        e.preventDefault(); // +998 ni o‘chirib bo‘lmasin
+      // Prefiksdan oldin o'chirishni taqiqlaymiz
+      if (e.inputType && e.inputType.startsWith('delete')) {
+        if (start <= 5) e.preventDefault();
+        return;
       }
-      if (e.key === 'Enter') {
-        if (!phoneRegex.test(phoneInput.value.trim())) e.preventDefault();
+
+      // Faqat raqamga ruxsat (paste, typing — hammasi)
+      if (typeof e.data === 'string' && e.data.length>0) {
+        if (!/^\d+$/.test(e.data)) {
+          e.preventDefault();
+          return;
+        }
       }
     });
 
+    // Har qanday o'zgarishda formatlash
     function refreshPhoneUI(){
-      phoneInput.value = formatPhone(phoneInput.value);
+      const val = phoneInput.value;
+      phoneInput.value = formatPhone(val);
       const full = phoneRegex.test(phoneInput.value.trim());
       phoneInput.style.borderColor = full ? '' : '#d80000';
       submitBtn.disabled = !full;
     }
-    phoneInput.addEventListener('input', refreshPhoneUI);
+    phoneInput.addEventListener('input', () => {
+      const oldLen = phoneInput.value.length;
+      refreshPhoneUI();
+      // Kursorni oxirga qo'yib yuboramiz — mobil uchun qulay
+      setCaretToEnd(phoneInput);
+    });
+
+    // Enter bosilganda ham tekshirish
+    phoneInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' && !phoneRegex.test(phoneInput.value.trim())) {
+        e.preventDefault();
+      }
+      // Prefiksdan orqaga Backspace/Del — himoya
+      if ((e.key === 'Backspace' || e.key === 'Delete') && (phoneInput.selectionStart ?? 0) <= 5) {
+        e.preventDefault();
+      }
+    });
 
     // Yuborish: to‘liq bo‘lsa formani yashiramiz va "yuborildi" xabarini ko‘rsatamiz
     form.addEventListener('submit',e=>{
@@ -219,17 +253,18 @@
       form.style.display = 'none';
       successBox.classList.add('active');
 
-      // 2.5 soniyadan keyin modalni yopish (xohlasangiz olib tashlang)
       setTimeout(()=>{
         successBox.classList.remove('active');
         form.reset();
-        refreshPhoneUI(); // tugmani qayta bloklaydi
+        submitBtn.disabled = true;
+        phoneInput.value = '';
         form.style.display = '';
         closeSheet();
       }, 2500);
     });
-  </script>
-  <script>
+  </script
+
+      <script>
 // Developer Tools, Ctrl+U va kontekst menyusini bloklash (Windows + Mac)
 document.addEventListener('keydown', function (e) {
   // F12, Ctrl+Shift+I/J/C/U (Windows), Ctrl+U, yoki Cmd+Opt+I/J/C/U (Mac)
@@ -251,7 +286,5 @@ document.addEventListener('contextmenu', function (e) {
   e.preventDefault();
 });
 </script>
-
 </body>
 </html>
-
